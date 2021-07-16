@@ -73,6 +73,6 @@ func main() {
 }
 
 func format(msg string) {
-	pc, fn, line, _ := runtime.Caller(1)
-	log.Fatalf("[%s] [%s:%d] %v", runtime.FuncForPC(pc).Name(), fn, line,msg)
+	_, fn, line, _ := runtime.Caller(1)
+	log.Fatalf("%s:%d %v", fn, line,msg)
 }
