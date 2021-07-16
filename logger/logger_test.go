@@ -17,7 +17,7 @@ func Test_FormatLog(t *testing.T) {
 	defer func() {
 		log.SetOutput(os.Stderr)
 	}()
-	initEasyFormat()
+	InitEasyFormat()
 	Infof("test log")
 
 	timev := time.Now()
