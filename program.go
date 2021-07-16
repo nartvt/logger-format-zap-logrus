@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 	prefixed "github.com/t-tomalak/logrus-prefixed-formatter"
+	"regexp"
 	"runtime"
 	"sort"
 	"strings"
@@ -37,6 +38,7 @@ func initLogFormat() {
 func initEasy() {
 	//pc, fn, line, _ := runtime.Caller(1)
 	formatter := &easy.Formatter{
+
 		TimestampFormat: "2006-01-02 15:04:05",
 		LogFormat:       "%time% [%lvl%] - %msg% ",
 	}
@@ -44,11 +46,11 @@ func initEasy() {
 }
 func initPrefixFormat() {
 	formatter := &prefixed.TextFormatter{
-		DisableColors:   true,
+		DisableColors: true,
+		ForceColors:     true,
 		TimestampFormat: "2006-01-02 15:04:05",
 		FullTimestamp:   true,
 		ForceFormatting: true,
-
 	}
 	log.SetFormatter(formatter)
 }
@@ -61,18 +63,32 @@ func runTime(f *runtime.Frame) (string, string) {
 	return "", fmt.Sprintf("\t%s - line %d", fileLine(f.File), f.Line)
 }
 
-func init(){
-	//initLogFormat()
-	initEasy()
+func init() {
+	initLogFormat()
+	//initEasy()
 	//initPrefixFormat()
 }
 func main() {
-	log.Info("After show format time 738")
-	fmt.Println("")
+	//log.Info("After show format time 738")
+	//fmt.Println("")
 	format("Message test line and func")
+	//pattern := "time=[1] level=[2] caller=[3] msg=[4]"
+	//regex(pattern)
 }
 
 func format(msg string) {
 	_, fn, line, _ := runtime.Caller(1)
-	log.Fatalf("%s:%d %v", fn, line,msg)
+	log.Infof("%s:%d - %s", fn, line, msg)
+}
+
+const str = "Some strings. Price: 100$. Some strings123"
+
+func regex(pattern string) {
+	re := regexp.MustCompile(`\s*(\d*)`)
+	match := re.FindStringSubmatch(pattern)
+	if match != nil {
+		fmt.Println(match[1])
+	} else {
+		fmt.Println("No match!")
+	}
 }
