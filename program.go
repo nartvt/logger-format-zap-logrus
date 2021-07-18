@@ -7,6 +7,16 @@ import (
 func init() {
 	logger.InitEasyFormat()
 }
+
 func main() {
-	logger.Infof("Message test line and func")
+	zapLog := logger.ZapFormat()
+	logger.LoggerZap = logger.NewZapLogger(zapLog)
+	testLog()
+	defer zapLog.Sync()
+	//logger.Infof("Message Testing")
+}
+
+func testLog() {
+	logZap := logger.LoggerZap.GetZapLogger()
+	logZap.Info("Message Testting")
 }
